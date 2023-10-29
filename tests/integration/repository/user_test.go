@@ -20,9 +20,6 @@ func setupDBForUserTest() (*gorm.DB, error) {
 
 	if err := db.AutoMigrate(
 		&model.User{},
-		&model.Expense{},
-		&model.ReoccuringPaymentModel{},
-		&model.GoalModel{},
 	); err != nil {
 		return &gorm.DB{}, err
 	}
@@ -43,9 +40,10 @@ func TestUserRepository_Insert(t *testing.T) {
 	t.Run("should insert user", func(t *testing.T) {
 		exp := model.User{
 			Email:    "test@example.com",
+			FullName: "Fulan",
 			Password: "hashedpass",
 		}
-		got, err := ur.Insert("test@example.com", "hashedpass")
+		got, err := ur.Insert("test@example.com", "Fulan", "hashedpass")
 		if err != nil {
 			t.Error("exp nil; got error:", err)
 		}
@@ -55,7 +53,7 @@ func TestUserRepository_Insert(t *testing.T) {
 		}
 	})
 	t.Run("should return error when email already exists", func(t *testing.T) {
-		if _, err := ur.Insert("test@example.com", "hashedpass"); err == nil {
+		if _, err := ur.Insert("test@example.com", "Fulan", "hashedpass"); err == nil {
 			t.Error("exp error; got nil")
 		}
 	})
@@ -69,9 +67,10 @@ func TestUserRepository_GetOneByEmail(t *testing.T) {
 	ur := repository.NewUserRepository(db)
 	opts := []cmp.Option{
 		cmpopts.IgnoreFields(model.User{}, "Model"),
+		cmpopts.IgnoreFields(model.User{}, "FullName"),
 	}
 
-	if _, err := ur.Insert("get.one.by.email@example.com", "hashedpass"); err != nil {
+	if _, err := ur.Insert("get.one.by.email@example.com", "Fulan", "hashedpass"); err != nil {
 		t.Error("exp nil; got error:", err)
 	}
 
@@ -106,7 +105,7 @@ func TestUserRepository_GetOneByID(t *testing.T) {
 		cmpopts.IgnoreFields(model.User{}, "Model"),
 	}
 
-	mockUser, err := ur.Insert("get.one.by.email@example.com", "hashedpass")
+	mockUser, err := ur.Insert("get.one.by.email@example.com", "Fulan", "hashedpass")
 	if err != nil {
 		t.Error("exp nil; got error:", err)
 	}
@@ -139,13 +138,13 @@ func TestUserRepository_UpdateOneByID(t *testing.T) {
 		cmpopts.IgnoreFields(model.User{}, "Model"),
 	}
 
-	mockUser, err := ur.Insert("before.update@example.com", "hashedpass")
+	mockUser, err := ur.Insert("before.update@example.com", "Fulan", "hashedpass")
 	if err != nil {
 		t.Error("exp nil; got error:", err)
 	}
 
 	t.Run("should return error if user does not exist", func(t *testing.T) {
-		if _, err := ur.UpdateOneByID(1001, "does.not.exist@example.com", "hashedpass"); err == nil {
+		if _, err := ur.UpdateOneByID(1001, "does.not.exist@example.com", "Fulan", "hashedpass"); err == nil {
 			t.Error("exp error; got nil")
 		}
 	})
@@ -154,7 +153,7 @@ func TestUserRepository_UpdateOneByID(t *testing.T) {
 			Email:    "after.update@example.com",
 			Password: "updatedhash",
 		}
-		got, err := ur.UpdateOneByID(int(mockUser.ID), "after.update@example.com", "updatedhash")
+		got, err := ur.UpdateOneByID(int(mockUser.ID), "after.update@example.com", "Fulan", "updatedhash")
 		if err != nil {
 			t.Error("exp nil; got error:", err)
 		}
@@ -172,7 +171,7 @@ func TestUserRepository_DeleteOneByID(t *testing.T) {
 	}
 	ur := repository.NewUserRepository(db)
 
-	mockUser, err := ur.Insert("to.be.deleted@example.com", "hashedpass")
+	mockUser, err := ur.Insert("to.be.deleted@example.com", "Fulan", "hashedpass")
 	if err != nil {
 		t.Error("exp nil; got error:", err)
 	}
