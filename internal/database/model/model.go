@@ -18,6 +18,7 @@ type User struct {
 
 type Account struct {
 	gorm.Model
+	UserID        int    `json:"userId"`
 	CurrencyID    int    `json:"currencyId"`
 	Name          string `json:"name"`
 	InitialAmount int    `json:"initialAmount"`
