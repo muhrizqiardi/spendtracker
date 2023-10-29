@@ -6,11 +6,11 @@ import (
 )
 
 type UserRepository interface {
-	Insert(email string, password string) (model.User, error)
+	Insert(email string, fullName string, password string) (model.User, error)
 	GetOneByEmail(email string) (model.User, error)
 	GetOneByID(id int) (model.User, error)
-	UpdateOneByID(id int, email string, password string) (model.User, error)
-	DeleteOneByID(id int) (model.User, error)
+	UpdateOneByID(id int, email string, fullName string, password string) (model.User, error)
+	DeleteOneByID(id int) error
 }
 
 type userRepository struct {
@@ -21,9 +21,10 @@ func NewUserRepository(db *gorm.DB) *userRepository {
 	return &userRepository{db}
 }
 
-func (ur *userRepository) Insert(email string, password string) (model.User, error) {
+func (ur *userRepository) Insert(email string, fullName string, password string) (model.User, error) {
 	newUser := model.User{
 		Email:    email,
+		FullName: fullName,
 		Password: password,
 	}
 	if err := ur.db.Save(&newUser).Error; err != nil {
@@ -51,7 +52,7 @@ func (ur *userRepository) GetOneByID(id int) (model.User, error) {
 	return user, nil
 }
 
-func (ur *userRepository) UpdateOneByID(id int, email string, password string) (model.User, error) {
+func (ur *userRepository) UpdateOneByID(id int, email string, fullName string, password string) (model.User, error) {
 	user := model.User{
 		Model: gorm.Model{
 			ID: uint(id),
