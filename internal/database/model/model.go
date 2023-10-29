@@ -18,20 +18,21 @@ type User struct {
 
 type Account struct {
 	gorm.Model
-	CurrencyID    int    `json:"currencyId"`
+	UserID        uint   `json:"userId"`
+	CurrencyID    uint   `json:"currencyId"`
 	Name          string `json:"name"`
 	InitialAmount int    `json:"initialAmount"`
 }
 
 type Category struct {
 	gorm.Model
-	UserID int    `gorm:"uniqueIndex:users_categories" json:"userId"`
+	UserID uint   `gorm:"uniqueIndex:users_categories" json:"userId"`
 	Name   string `gorm:"uniqueIndex:users_categories" json:"name"`
 }
 
 type Expense struct {
 	gorm.Model
-	UserID      int    `json:"userId"`
+	UserID      uint   `json:"userId"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Amount      int    `json:"amount"`
