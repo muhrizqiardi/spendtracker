@@ -19,10 +19,10 @@ func setupDBForUserTest() (*gorm.DB, error) {
 	}
 
 	if err := db.AutoMigrate(
-		&model.UserModel{},
-		&model.ExpenseModel{},
+		&model.User{},
+		&model.Expense{},
 		&model.ReoccuringPaymentModel{},
-		&model.Goal{},
+		&model.GoalModel{},
 	); err != nil {
 		return &gorm.DB{}, err
 	}
@@ -37,11 +37,11 @@ func TestUserRepository_Insert(t *testing.T) {
 	}
 	ur := repository.NewUserRepository(db)
 	opts := []cmp.Option{
-		cmpopts.IgnoreFields(model.UserModel{}, "Model"),
+		cmpopts.IgnoreFields(model.User{}, "Model"),
 	}
 
 	t.Run("should insert user", func(t *testing.T) {
-		exp := model.UserModel{
+		exp := model.User{
 			Email:    "test@example.com",
 			Password: "hashedpass",
 		}
@@ -68,7 +68,7 @@ func TestUserRepository_GetOneByEmail(t *testing.T) {
 	}
 	ur := repository.NewUserRepository(db)
 	opts := []cmp.Option{
-		cmpopts.IgnoreFields(model.UserModel{}, "Model"),
+		cmpopts.IgnoreFields(model.User{}, "Model"),
 	}
 
 	if _, err := ur.Insert("get.one.by.email@example.com", "hashedpass"); err != nil {
@@ -81,7 +81,7 @@ func TestUserRepository_GetOneByEmail(t *testing.T) {
 		}
 	})
 	t.Run("should return user", func(t *testing.T) {
-		exp := model.UserModel{
+		exp := model.User{
 			Email:    "get.one.by.email@example.com",
 			Password: "hashedpass",
 		}
@@ -103,7 +103,7 @@ func TestUserRepository_GetOneByID(t *testing.T) {
 	}
 	ur := repository.NewUserRepository(db)
 	opts := []cmp.Option{
-		cmpopts.IgnoreFields(model.UserModel{}, "Model"),
+		cmpopts.IgnoreFields(model.User{}, "Model"),
 	}
 
 	mockUser, err := ur.Insert("get.one.by.email@example.com", "hashedpass")
@@ -136,7 +136,7 @@ func TestUserRepository_UpdateOneByID(t *testing.T) {
 	}
 	ur := repository.NewUserRepository(db)
 	opts := []cmp.Option{
-		cmpopts.IgnoreFields(model.UserModel{}, "Model"),
+		cmpopts.IgnoreFields(model.User{}, "Model"),
 	}
 
 	mockUser, err := ur.Insert("before.update@example.com", "hashedpass")
@@ -150,7 +150,7 @@ func TestUserRepository_UpdateOneByID(t *testing.T) {
 		}
 	})
 	t.Run("should update user's email and returns its result", func(t *testing.T) {
-		exp := model.UserModel{
+		exp := model.User{
 			Email:    "after.update@example.com",
 			Password: "updatedhash",
 		}
