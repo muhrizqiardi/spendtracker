@@ -257,11 +257,27 @@ func TestUserService_UpdateOneByID(t *testing.T) {
 }
 
 func TestUserService_DeleteOneByID(t *testing.T) {
-	// ctrl := gomock.NewController(t)
-	// mur := mock_repository.NewMockUserRepository(ctrl)
-	// us := NewUserService(mur)
+	ctrl := gomock.NewController(t)
+	mur := mock_repository.NewMockUserRepository(ctrl)
+	us := NewUserService(mur)
 
-	// t.Run("should return error if payload is invalid", func(t *testing.T) {})
-	// t.Run("should return error when repository returns error", func(t *testing.T) {})
-	// t.Run("should delete user and return nil", func(t *testing.T) {})
+	t.Run("should return error when repository returns error", func(t *testing.T) {
+		mur.EXPECT().DeleteOneByID(gomock.Eq(1)).DoAndReturn(func(id int) error {
+			return errors.New("")
+		})
+
+		if err := us.DeleteOneByID(1); err == nil {
+			t.Error("exp error; got nil")
+		}
+	})
+	t.Run("should delete user and return nil", func(t *testing.T) {
+		mur.EXPECT().DeleteOneByID(gomock.Eq(1)).DoAndReturn(func(id int) error {
+			return nil
+		})
+
+		err := us.DeleteOneByID(1)
+		if err != nil {
+			t.Error("exp nil; got", err)
+		}
+	})
 }
