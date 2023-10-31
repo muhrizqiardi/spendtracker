@@ -13,7 +13,7 @@ type UserService interface {
 	GetOneByID(id int) (model.User, error)
 	GetOneByEmail(email string) (model.User, error)
 	UpdateOneByID(id int, payload dto.UpdateUserDTO) (model.User, error)
-	DeleteOneByID(id int) (model.User, error)
+	DeleteOneByID(id int) error
 }
 
 type userService struct {
@@ -79,6 +79,10 @@ func (us *userService) UpdateOneByID(id int, payload dto.UpdateUserDTO) (model.U
 	return user, nil
 }
 
-func (us *userService) DeleteOneByID(id int) (model.User, error) {
-	return model.User{}, nil
+func (us *userService) DeleteOneByID(id int) error {
+	if err := us.ur.DeleteOneByID(id); err != nil {
+		return err
+	}
+
+	return nil
 }
