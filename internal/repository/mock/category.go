@@ -35,9 +35,11 @@ func (m *MockCategoryRepository) EXPECT() *MockCategoryRepositoryMockRecorder {
 }
 
 // Delete mocks base method.
-func (m *MockCategoryRepository) Delete(id uint) {
+func (m *MockCategoryRepository) Delete(id uint) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Delete", id)
+	ret := m.ctrl.Call(m, "Delete", id)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // Delete indicates an expected call of Delete.
