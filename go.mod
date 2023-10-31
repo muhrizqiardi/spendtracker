@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/go-playground/validator/v10 v10.15.5
+	github.com/golang-jwt/jwt/v5 v5.0.0
 	github.com/google/go-cmp v0.5.9
 	go.uber.org/mock v0.3.0
 	golang.org/x/crypto v0.14.0
