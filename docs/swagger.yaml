@@ -1,0 +1,41 @@
+definitions:
+  dto.LogInDTO:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  response.LogInResponse:
+    properties:
+      token:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: API for Spendtracker
+  title: Spendtracker API
+  version: "1.0"
+paths:
+  /users:
+    post:
+      parameters:
+      - description: log in DTO
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LogInDTO'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.LogInResponse'
+      summary: Log in to account
+      tags:
+      - auth
+swagger: "2.0"
