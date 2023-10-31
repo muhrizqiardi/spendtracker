@@ -10,7 +10,7 @@ type CategoryRepository interface {
 	GetOneByID(id uint) (model.Category, error)
 	GetOneByName(name string) (model.Category, error)
 	GetMany(userID uint, limit int, offset int) ([]model.Category, error)
-	Delete(id uint)
+	Delete(id uint) error
 }
 
 type categoryRepository struct {
