@@ -6,7 +6,7 @@ import (
 )
 
 type ExpenseRepository interface {
-	Insert(userID uint, name string, description string, amount int) (model.Expense, error)
+	Insert(userID uint, accountID uint, name string, description string, amount int) (model.Expense, error)
 	GetOneByID(id uint) (model.Expense, error)
 	GetMany(limit, offset int) ([]model.Expense, error)
 	GetManyBelongedToUser(userID uint, limit, offset int) ([]model.Expense, error)
@@ -25,9 +25,10 @@ func NewExpenseRepository(db *gorm.DB) *expenseRepository {
 	return &expenseRepository{db}
 }
 
-func (er *expenseRepository) Insert(userID uint, name string, description string, amount int) (model.Expense, error) {
+func (er *expenseRepository) Insert(userID uint, accountID uint, name string, description string, amount int) (model.Expense, error) {
 	expense := model.Expense{
 		UserID:      userID,
+		AccountID:   accountID,
 		Name:        name,
 		Description: description,
 		Amount:      amount,
