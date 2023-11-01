@@ -33,6 +33,7 @@ type Category struct {
 type Expense struct {
 	gorm.Model
 	UserID      uint   `json:"userId"`
+	AccountID   uint   `json:"accountId"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Amount      int    `json:"amount"`
