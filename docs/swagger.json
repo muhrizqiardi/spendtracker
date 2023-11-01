@@ -7,7 +7,144 @@
         "version": "1.0"
     },
     "paths": {
-        "/users": {
+        "/accounts": {
+            "post": {
+                "tags": [
+                    "account"
+                ],
+                "summary": "Create to account",
+                "parameters": [
+                    {
+                        "description": "Create account DTO",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateAccountDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonAccountResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts/": {
+            "get": {
+                "tags": [
+                    "account"
+                ],
+                "summary": "Get many",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Amount of items per page",
+                        "name": "itemPerPage",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-array_response_CommonAccountResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts/{accountID}": {
+            "get": {
+                "tags": [
+                    "account"
+                ],
+                "summary": "Get one by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Account ID",
+                        "name": "accountID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonAccountResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "account"
+                ],
+                "summary": "Update account",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Account ID",
+                        "name": "accountID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update account DTO",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateAccountDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonAccountResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "account"
+                ],
+                "summary": "Delete account",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Account ID",
+                        "name": "accountID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth": {
             "post": {
                 "tags": [
                     "auth"
@@ -36,6 +173,25 @@
         }
     },
     "definitions": {
+        "dto.CreateAccountDTO": {
+            "type": "object",
+            "required": [
+                "currencyId",
+                "initialAmount",
+                "name"
+            ],
+            "properties": {
+                "currencyId": {
+                    "type": "integer"
+                },
+                "initialAmount": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.LogInDTO": {
             "type": "object",
             "required": [
@@ -52,11 +208,74 @@
                 }
             }
         },
+        "response.CommonAccountResponse": {
+            "type": "object",
+            "properties": {
+                "currencyId": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "initialAmount": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
         "response.LogInResponse": {
             "type": "object",
             "properties": {
                 "token": {
                     "type": "string"
+                }
+            }
+        },
+        "util.BaseResponse-any": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "util.BaseResponse-array_response_CommonAccountResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.CommonAccountResponse"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "util.BaseResponse-response_CommonAccountResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/response.CommonAccountResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
                 }
             }
         }
