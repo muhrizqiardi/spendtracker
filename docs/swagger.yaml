@@ -12,6 +12,13 @@ definitions:
     - initialAmount
     - name
     type: object
+  dto.CreateCategoryDTO:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
   dto.LogInDTO:
     properties:
       email:
@@ -32,6 +39,19 @@ definitions:
       initialAmount:
         type: integer
       name:
+        type: string
+      userId:
+        type: integer
+    type: object
+  response.CommonCategoryResponse:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
         type: string
       userId:
         type: integer
@@ -60,10 +80,30 @@ definitions:
       success:
         type: boolean
     type: object
+  util.BaseResponse-array_response_CommonCategoryResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/response.CommonCategoryResponse'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
   util.BaseResponse-response_CommonAccountResponse:
     properties:
       data:
         $ref: '#/definitions/response.CommonAccountResponse'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  util.BaseResponse-response_CommonCategoryResponse:
+    properties:
+      data:
+        $ref: '#/definitions/response.CommonCategoryResponse'
       message:
         type: string
       success:
@@ -180,4 +220,60 @@ paths:
       summary: Log in to account
       tags:
       - auth
+  /categories:
+    get:
+      parameters:
+      - description: Amount of items per page
+        in: query
+        name: itemPerPage
+        required: true
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.BaseResponse-array_response_CommonCategoryResponse'
+      summary: Get many categories
+      tags:
+      - category
+    post:
+      parameters:
+      - description: Create category DTO
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateCategoryDTO'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/util.BaseResponse-response_CommonCategoryResponse'
+      summary: Create category
+      tags:
+      - category
+  /categories/{categoryID}:
+    delete:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.BaseResponse-any'
+      summary: Delete one category by ID
+      tags:
+      - category
+    get:
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.BaseResponse-response_CommonCategoryResponse'
+      summary: Get one category by ID
+      tags:
+      - category
 swagger: "2.0"

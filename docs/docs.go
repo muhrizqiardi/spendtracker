@@ -178,6 +178,93 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/categories": {
+            "get": {
+                "tags": [
+                    "category"
+                ],
+                "summary": "Get many categories",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Amount of items per page",
+                        "name": "itemPerPage",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-array_response_CommonCategoryResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "category"
+                ],
+                "summary": "Create category",
+                "parameters": [
+                    {
+                        "description": "Create category DTO",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateCategoryDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonCategoryResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/categories/{categoryID}": {
+            "get": {
+                "tags": [
+                    "category"
+                ],
+                "summary": "Get one category by ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonCategoryResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "category"
+                ],
+                "summary": "Delete one category by ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-any"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -195,6 +282,17 @@ const docTemplate = `{
                 "initialAmount": {
                     "type": "integer"
                 },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CreateCategoryDTO": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
                 "name": {
                     "type": "string"
                 }
@@ -229,6 +327,26 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "name": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.CommonCategoryResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updatedAt": {
                     "type": "string"
                 },
                 "userId": {
@@ -273,11 +391,42 @@ const docTemplate = `{
                 }
             }
         },
+        "util.BaseResponse-array_response_CommonCategoryResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.CommonCategoryResponse"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "util.BaseResponse-response_CommonAccountResponse": {
             "type": "object",
             "properties": {
                 "data": {
                     "$ref": "#/definitions/response.CommonAccountResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "util.BaseResponse-response_CommonCategoryResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/response.CommonCategoryResponse"
                 },
                 "message": {
                     "type": "string"
