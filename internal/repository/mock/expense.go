@@ -139,18 +139,18 @@ func (mr *MockExpenseRepositoryMockRecorder) GetOneByID(id interface{}) *gomock.
 }
 
 // Insert mocks base method.
-func (m *MockExpenseRepository) Insert(userID uint, name, description string, amount int) (model.Expense, error) {
+func (m *MockExpenseRepository) Insert(userID, accountID uint, name, description string, amount int) (model.Expense, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Insert", userID, name, description, amount)
+	ret := m.ctrl.Call(m, "Insert", userID, accountID, name, description, amount)
 	ret0, _ := ret[0].(model.Expense)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Insert indicates an expected call of Insert.
-func (mr *MockExpenseRepositoryMockRecorder) Insert(userID, name, description, amount interface{}) *gomock.Call {
+func (mr *MockExpenseRepositoryMockRecorder) Insert(userID, accountID, name, description, amount interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockExpenseRepository)(nil).Insert), userID, name, description, amount)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockExpenseRepository)(nil).Insert), userID, accountID, name, description, amount)
 }
 
 // UpdateOneByID mocks base method.
