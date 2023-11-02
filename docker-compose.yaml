@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql
+    restart: always
+    env_file: .env
+    ports:
+      - 3306:3306
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 1323:1323
+    env_file:
+      .env
+    depends_on:
+      db:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+volumes:
+  db:
+    driver: local
