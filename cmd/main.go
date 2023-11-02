@@ -12,6 +12,7 @@ import (
 	"github.com/muhrizqiardi/spendtracker/internal/route"
 	"github.com/muhrizqiardi/spendtracker/internal/service"
 	"github.com/muhrizqiardi/spendtracker/internal/util"
+	"github.com/sashabaranov/go-openai"
 	echoSwagger "github.com/swaggo/echo-swagger"
 	"go.uber.org/zap"
 )
@@ -30,22 +31,27 @@ func main() {
 	cfg := util.LoadConfig()
 	db, err := setup.SetupMigrateAndSeedMySQL(cfg, lg)
 
+	oac := openai.NewClient(cfg.OpenAIAPIKey)
+
 	userRepo := repository.NewUserRepository(db)
 	accountRepo := repository.NewAccountRepository(db)
 	categoryRepo := repository.NewCategoryRepository(db)
 	expenseRepo := repository.NewExpenseRepository(db)
+	openaiRepo := repository.NewOpenAIRepository(oac)
 
 	userService := service.NewUserService(userRepo)
 	authService := service.NewAuthService(userService, cfg.Secret)
 	accountService := service.NewAccountService(accountRepo)
 	categoryService := service.NewCategoryService(categoryRepo)
 	expenseService := service.NewExpenseService(expenseRepo, accountService)
+	adviceService := service.NewAdviceService(expenseService, openaiRepo)
 
 	authHandler := handler.NewAuthHandler(authService)
 	userHandler := handler.NewUserHandler(userService)
 	accountHandler := handler.NewAccountHandler(accountService)
 	categoryHandler := handler.NewCategoryHandler(categoryService)
 	expenseHandler := handler.NewExpenseHandler(expenseService)
+	adviceHandler := handler.NewAdviceHandler(adviceService)
 
 	authMiddleware := middleware.NewAuthMiddleware(userService, cfg.Secret)
 
@@ -59,6 +65,7 @@ func main() {
 		accountHandler,
 		categoryHandler,
 		expenseHandler,
+		adviceHandler,
 	).Define()
 
 	r.GET("/docs/*", echoSwagger.WrapHandler)
