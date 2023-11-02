@@ -19,6 +19,18 @@ definitions:
     required:
     - name
     type: object
+  dto.CreateExpenseDTO:
+    properties:
+      amount:
+        type: integer
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - amount
+    - name
+    type: object
   dto.LogInDTO:
     properties:
       email:
@@ -29,6 +41,18 @@ definitions:
     required:
     - email
     - password
+    type: object
+  dto.UpdateExpenseDTO:
+    properties:
+      amount:
+        type: integer
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - amount
+    - name
     type: object
   response.CommonAccountResponse:
     properties:
@@ -46,6 +70,25 @@ definitions:
   response.CommonCategoryResponse:
     properties:
       createdAt:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+    type: object
+  response.CommonExpenseResponse:
+    properties:
+      accountId:
+        type: integer
+      amount:
+        type: integer
+      createdAt:
+        type: string
+      description:
         type: string
       id:
         type: integer
@@ -91,6 +134,17 @@ definitions:
       success:
         type: boolean
     type: object
+  util.BaseResponse-array_response_CommonExpenseResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/response.CommonExpenseResponse'
+        type: array
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
   util.BaseResponse-response_CommonAccountResponse:
     properties:
       data:
@@ -104,6 +158,15 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/response.CommonCategoryResponse'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  util.BaseResponse-response_CommonExpenseResponse:
+    properties:
+      data:
+        $ref: '#/definitions/response.CommonExpenseResponse'
       message:
         type: string
       success:
@@ -203,6 +266,28 @@ paths:
       summary: Update account
       tags:
       - account
+  /accounts/{accountID}/expenses:
+    post:
+      parameters:
+      - description: Account ID
+        in: path
+        name: accountId
+        required: true
+        type: string
+      - description: Create expense DTO
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateExpenseDTO'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/util.BaseResponse-response_CommonExpenseResponse'
+      summary: Create expense
+      tags:
+      - expense
   /auth:
     post:
       parameters:
@@ -276,4 +361,70 @@ paths:
       summary: Get one category by ID
       tags:
       - category
+  /expenses:
+    get:
+      parameters:
+      - description: Account ID
+        in: query
+        name: accountId
+        type: string
+      - description: Category ID
+        in: query
+        name: categoryId
+        type: string
+      - description: Amount of items per page
+        in: query
+        name: itemPerPage
+        required: true
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.BaseResponse-array_response_CommonExpenseResponse'
+      summary: Get many expenses
+      tags:
+      - expense
+  /expenses/{expenseID}:
+    get:
+      parameters:
+      - description: Expense ID
+        in: path
+        name: expenseID
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.BaseResponse-any'
+      summary: Delete one expense by ID
+      tags:
+      - expense
+    put:
+      parameters:
+      - description: Expense ID
+        in: path
+        name: expenseID
+        required: true
+        type: string
+      - description: Update expense DTO
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateExpenseDTO'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.BaseResponse-response_CommonExpenseResponse'
+      summary: Update expense
+      tags:
+      - expense
 swagger: "2.0"
