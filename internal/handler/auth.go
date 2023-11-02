@@ -52,8 +52,8 @@ func (ah *authHandler) LogIn(c echo.Context) error {
 	return c.JSON(
 		http.StatusCreated,
 		util.CreateBaseResponse[response.LogInResponse](
-			false,
-			"Internal Server Error",
+			true,
+			"Log in success",
 			response.LogInResponse{
 				Token: token,
 			},

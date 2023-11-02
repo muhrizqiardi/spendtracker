@@ -38,32 +38,29 @@ func (r *router) Define() *echo.Echo {
 	r.e.POST("/auth", r.authh.LogIn)
 	r.e.POST("/users", r.userh.Register)
 
-	protected := r.e.Group("/")
+	protected := r.e.Group("/", r.authm.Authenticate)
+	{
+		protected.PUT("users/:userID", r.userh.UpdateOneByID)
 
-	protected.Use(
-		r.authm.Authenticate,
-	)
+		protected.POST("accounts", r.accounth.Create)
+		protected.GET("accounts", r.accounth.GetMany)
+		protected.GET("accounts/:accountID", r.accounth.GetOneByID)
+		protected.PUT("accounts/:accountID", r.accounth.UpdateOneByID)
+		protected.DELETE("accounts/:accountID", r.accounth.DeleteOneByID)
 
-	protected.PUT("/users/:userID", r.userh.UpdateOneByID)
+		protected.POST("categories", r.categoryh.Create)
+		protected.GET("categories/:categoryID", r.categoryh.GetOneByID)
+		protected.GET("categories", r.categoryh.GetMany)
+		protected.DELETE("categories/:categoryID", r.categoryh.DeleteOneByID)
 
-	protected.POST("/accounts", r.accounth.Create)
-	protected.GET("/accounts", r.accounth.GetMany)
-	protected.GET("/accounts/:accountID", r.accounth.GetOneByID)
-	protected.PUT("/accounts/:accountID", r.accounth.UpdateOneByID)
-	protected.DELETE("/accounts/:accountID", r.accounth.DeleteOneByID)
+		protected.POST("accounts/:accountID/expenses", r.expenseh.Create)
+		protected.GET("expenses/:expenseID", r.expenseh.GetOneByID)
+		protected.GET("expenses", r.expenseh.GetMany)
+		protected.PUT("expenses/:expenseID", r.expenseh.UpdateOneByID)
+		protected.DELETE("expenses/:expenseID", r.expenseh.DeleteOneByID)
 
-	protected.POST("/categories", r.categoryh.Create)
-	protected.GET("/categories/:categoryID", r.categoryh.GetOneByID)
-	protected.GET("/categories", r.categoryh.GetMany)
-	protected.DELETE("/categories/:categoryID", r.categoryh.DeleteOneByID)
-
-	protected.POST("/expenses", r.expenseh.Create)
-	protected.GET("/expenses/:expenseID", r.expenseh.GetOneByID)
-	protected.GET("/expenses", r.expenseh.GetMany)
-	protected.PUT("/expenses/:expenseID", r.expenseh.UpdateOneByID)
-	protected.DELETE("/expenses/:expenseID", r.expenseh.DeleteOneByID)
-
-	protected.GET("/advice", r.adviceh.GetAdvice)
+		protected.GET("advice", r.adviceh.GetAdvice)
+	}
 
 	return r.e
 }
