@@ -11,7 +11,7 @@ import (
 )
 
 func SetupMigrateAndSeedMySQL(cfg util.Config, lg util.Logger) (*gorm.DB, error) {
-	connStr := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local",
+	connStr := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
 		cfg.DB_Username,
 		cfg.DB_Password,
 		cfg.DB_Host,
@@ -21,6 +21,7 @@ func SetupMigrateAndSeedMySQL(cfg util.Config, lg util.Logger) (*gorm.DB, error)
 
 	db, err := gorm.Open(mysql.Open(connStr), &gorm.Config{})
 	if err != nil {
+		lg.Error("Failed to open connection", err)
 		return nil, err
 	}
 
@@ -31,6 +32,7 @@ func SetupMigrateAndSeedMySQL(cfg util.Config, lg util.Logger) (*gorm.DB, error)
 		&model.Currency{},
 		&model.Expense{},
 	); err != nil {
+		lg.Error("Failed to migrate", err)
 		return nil, err
 	}
 
