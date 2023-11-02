@@ -18,6 +18,7 @@ type router struct {
 	accounth  handler.AccountHandler
 	categoryh handler.CategoryHandler
 	expenseh  handler.ExpenseHandler
+	adviceh   handler.AdviceHandler
 }
 
 func NewRouter(
@@ -28,8 +29,9 @@ func NewRouter(
 	accounth handler.AccountHandler,
 	categoryh handler.CategoryHandler,
 	expenseh handler.ExpenseHandler,
+	adviceh handler.AdviceHandler,
 ) *router {
-	return &router{e, authh, authm, userh, accounth, categoryh, expenseh}
+	return &router{e, authh, authm, userh, accounth, categoryh, expenseh, adviceh}
 }
 
 func (r *router) Define() *echo.Echo {
@@ -61,6 +63,8 @@ func (r *router) Define() *echo.Echo {
 	protected.GET("/expenses", r.expenseh.GetMany)
 	protected.PUT("/expenses/:expenseID", r.expenseh.UpdateOneByID)
 	protected.DELETE("/expenses/:expenseID", r.expenseh.DeleteOneByID)
+
+	protected.GET("/advice", r.adviceh.GetAdvice)
 
 	return r.e
 }
