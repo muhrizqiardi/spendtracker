@@ -152,6 +152,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/accounts/{accountID}/expenses": {
+            "post": {
+                "tags": [
+                    "expense"
+                ],
+                "summary": "Create expense",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Account ID",
+                        "name": "accountId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Create expense DTO",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CreateExpenseDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonExpenseResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/auth": {
             "post": {
                 "tags": [
@@ -265,6 +299,107 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/expenses": {
+            "get": {
+                "tags": [
+                    "expense"
+                ],
+                "summary": "Get many expenses",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Account ID",
+                        "name": "accountId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Category ID",
+                        "name": "categoryId",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Amount of items per page",
+                        "name": "itemPerPage",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-array_response_CommonExpenseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/expenses/{expenseID}": {
+            "get": {
+                "tags": [
+                    "expense"
+                ],
+                "summary": "Delete one expense by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Expense ID",
+                        "name": "expenseID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-any"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "expense"
+                ],
+                "summary": "Update expense",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Expense ID",
+                        "name": "expenseID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update expense DTO",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateExpenseDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonExpenseResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -298,6 +433,24 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.CreateExpenseDTO": {
+            "type": "object",
+            "required": [
+                "amount",
+                "name"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.LogInDTO": {
             "type": "object",
             "required": [
@@ -311,6 +464,24 @@ const docTemplate = `{
                 "password": {
                     "type": "string",
                     "minLength": 8
+                }
+            }
+        },
+        "dto.UpdateExpenseDTO": {
+            "type": "object",
+            "required": [
+                "amount",
+                "name"
+            ],
+            "properties": {
+                "amount": {
+                    "type": "integer"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         },
@@ -338,6 +509,35 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "createdAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "response.CommonExpenseResponse": {
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "type": "integer"
+                },
+                "amount": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "description": {
                     "type": "string"
                 },
                 "id": {
@@ -408,6 +608,23 @@ const docTemplate = `{
                 }
             }
         },
+        "util.BaseResponse-array_response_CommonExpenseResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.CommonExpenseResponse"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
         "util.BaseResponse-response_CommonAccountResponse": {
             "type": "object",
             "properties": {
@@ -427,6 +644,20 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/response.CommonCategoryResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "util.BaseResponse-response_CommonExpenseResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/response.CommonExpenseResponse"
                 },
                 "message": {
                     "type": "string"
