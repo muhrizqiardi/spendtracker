@@ -11,7 +11,7 @@ type Currency struct {
 
 type User struct {
 	gorm.Model
-	Email    string `gorm:"uniqueIndex" json:"email"`
+	Email    string `gorm:"unique" json:"email"`
 	FullName string `json:"fullName"`
 	Password string `json:"password"`
 }
@@ -26,8 +26,8 @@ type Account struct {
 
 type Category struct {
 	gorm.Model
-	UserID uint   `gorm:"uniqueIndex:users_categories" json:"userId"`
-	Name   string `gorm:"uniqueIndex:users_categories" json:"name"`
+	UserID uint   `gorm:"unique:users_categories" json:"userId"`
+	Name   string `gorm:"unique:users_categories" json:"name"`
 }
 
 type Expense struct {
