@@ -8,6 +8,7 @@ import (
 )
 
 type Config struct {
+	Port        string
 	DB_Username string
 	DB_Password string
 	DB_Port     string
@@ -22,11 +23,12 @@ func LoadConfig() Config {
 	}
 
 	cfg := Config{
-		DB_Name:     os.Getenv("MYSQL_DATABASE"),
+		Port:        os.Getenv("PORT"),
+		DB_Name:     os.Getenv("MYSQL_DB"),
 		DB_Username: os.Getenv("MYSQL_USER"),
 		DB_Password: os.Getenv("MYSQL_PASSWORD"),
-		DB_Port:     os.Getenv("MYSQL_PORT"),
-		DB_Host:     os.Getenv("MYSQL_HOST"),
+		DB_Port:     os.Getenv("DB_PORT"),
+		DB_Host:     os.Getenv("DB_HOST"),
 		Secret:      os.Getenv("SECRET"),
 	}
 

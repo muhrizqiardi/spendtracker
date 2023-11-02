@@ -63,5 +63,5 @@ func main() {
 
 	r.GET("/docs/*", echoSwagger.WrapHandler)
 
-	lg.FatalError("Server failed", r.Start(":1323"))
+	lg.FatalError("Server failed", r.Start(":"+cfg.Port))
 }
