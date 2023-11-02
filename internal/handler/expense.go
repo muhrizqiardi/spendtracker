@@ -28,12 +28,12 @@ func NewExpenseHandler(es service.ExpenseService) *expenseHandler {
 	return &expenseHandler{es}
 }
 
-//	@Router		/accounts/{accountID}/expenses [post]
-//	@Summary	Create expense
-//	@Tags		expense
-//	@Param		accountId	path		string					true	"Account ID"
-//	@Param		payload		body		dto.CreateExpenseDTO	true	"Create expense DTO"
-//	@Success	201			{object}	util.BaseResponse[response.CommonExpenseResponse]
+// @Router		/accounts/{accountID}/expenses [post]
+// @Summary	Create expense
+// @Tags		expense
+// @Param		accountId	path		string					true	"Account ID"
+// @Param		payload		body		dto.CreateExpenseDTO	true	"Create expense DTO"
+// @Success	201			{object}	util.BaseResponse[response.CommonExpenseResponse]
 func (eh *expenseHandler) Create(c echo.Context) error {
 	accountID, err := strconv.Atoi(c.Param("accountID"))
 	if err != nil {
@@ -81,11 +81,11 @@ func (eh *expenseHandler) Create(c echo.Context) error {
 	)
 }
 
-//	@Router		/expenses/{expenseID} [get]
-//	@Summary	Get one expense by ID
-//	@Tags		expense
-//	@Param		expenseID	path		string	true	"Expense ID"
-//	@Success	200			{object}	util.BaseResponse[response.CommonExpenseResponse]
+// @Router		/expenses/{expenseID} [get]
+// @Summary	Get one expense by ID
+// @Tags		expense
+// @Param		expenseID	path		string	true	"Expense ID"
+// @Success	200			{object}	util.BaseResponse[response.CommonExpenseResponse]
 func (eh *expenseHandler) GetOneByID(c echo.Context) error {
 	expenseID, err := strconv.Atoi(c.Param("expenseID"))
 	if err != nil {
@@ -123,14 +123,14 @@ func (eh *expenseHandler) GetOneByID(c echo.Context) error {
 	)
 }
 
-//	@Router		/expenses [get]
-//	@Summary	Get many expenses
-//	@Tags		expense
-//	@Param		accountId	query		string	false	"Account ID"
-//	@Param		categoryId	query		string	false	"Category ID"
-//	@Param		itemPerPage	query		string	true	"Amount of items per page"
-//	@Param		page		query		string	true	"Page number"
-//	@Success	200			{object}	util.BaseResponse[[]response.CommonExpenseResponse]
+// @Router		/expenses [get]
+// @Summary	Get many expenses
+// @Tags		expense
+// @Param		accountId	query		string	false	"Account ID"
+// @Param		categoryId	query		string	false	"Category ID"
+// @Param		itemPerPage	query		string	true	"Amount of items per page"
+// @Param		page		query		string	true	"Page number"
+// @Success	200			{object}	util.BaseResponse[[]response.CommonExpenseResponse]
 func (eh *expenseHandler) GetMany(c echo.Context) error {
 	user := c.Get("user").(model.User)
 	itemPerPage := 10
@@ -305,12 +305,12 @@ func (eh *expenseHandler) GetMany(c echo.Context) error {
 	}
 }
 
-//	@Router		/expenses/{expenseID} [put]
-//	@Summary	Update expense
-//	@Tags		expense
-//	@Param		expenseID	path		string					true	"Expense ID"
-//	@Param		payload		body		dto.UpdateExpenseDTO	true	"Update expense DTO"
-//	@Success	200			{object}	util.BaseResponse[response.CommonExpenseResponse]
+// @Router		/expenses/{expenseID} [put]
+// @Summary	Update expense
+// @Tags		expense
+// @Param		expenseID	path		string					true	"Expense ID"
+// @Param		payload		body		dto.UpdateExpenseDTO	true	"Update expense DTO"
+// @Success	200			{object}	util.BaseResponse[response.CommonExpenseResponse]
 func (eh *expenseHandler) UpdateOneByID(c echo.Context) error {
 	expenseID, err := strconv.Atoi(c.Param("expenseID"))
 	if err != nil {
@@ -366,11 +366,11 @@ func (eh *expenseHandler) UpdateOneByID(c echo.Context) error {
 	)
 }
 
-//	@Router		/expenses/{expenseID} [get]
-//	@Summary	Delete one expense by ID
-//	@Tags		expense
-//	@Param		expenseID	path		string	true	"Expense ID"
-//	@Success	200			{object}	util.BaseResponse[any]
+// @Router		/expenses/{expenseID} [delete]
+// @Summary	Delete one expense by ID
+// @Tags		expense
+// @Param		expenseID	path		string	true	"Expense ID"
+// @Success	200			{object}	util.BaseResponse[any]
 func (eh *expenseHandler) DeleteOneByID(c echo.Context) error {
 	expenseID, err := strconv.Atoi(c.Param("expenseID"))
 	if err != nil {

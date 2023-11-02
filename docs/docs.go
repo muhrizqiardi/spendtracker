@@ -115,7 +115,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateAccountDTO"
+                            "$ref": "#/definitions/dto.UpdateAccountDTO"
                         }
                     }
                 ],
@@ -349,7 +349,7 @@ const docTemplate = `{
                 "tags": [
                     "expense"
                 ],
-                "summary": "Delete one expense by ID",
+                "summary": "Get one expense by ID",
                 "parameters": [
                     {
                         "type": "string",
@@ -363,7 +363,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/util.BaseResponse-any"
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonExpenseResponse"
                         }
                     }
                 }
@@ -396,6 +396,90 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/util.BaseResponse-response_CommonExpenseResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "expense"
+                ],
+                "summary": "Delete one expense by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Expense ID",
+                        "name": "expenseID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-any"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Register user",
+                "parameters": [
+                    {
+                        "description": "Create user DTO",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RegisterUserDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonUserResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{userID}": {
+            "put": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Update user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "userID",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update user DTO",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.UpdateUserDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonUserResponse"
                         }
                     }
                 }
@@ -467,6 +551,44 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.RegisterUserDTO": {
+            "type": "object",
+            "required": [
+                "fullName",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
+                }
+            }
+        },
+        "dto.UpdateAccountDTO": {
+            "type": "object",
+            "required": [
+                "currencyId",
+                "initialAmount",
+                "name"
+            ],
+            "properties": {
+                "currencyId": {
+                    "type": "integer"
+                },
+                "initialAmount": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.UpdateExpenseDTO": {
             "type": "object",
             "required": [
@@ -482,6 +604,26 @@ const docTemplate = `{
                 },
                 "name": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.UpdateUserDTO": {
+            "type": "object",
+            "required": [
+                "email",
+                "fullName",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 8
                 }
             }
         },
@@ -551,6 +693,29 @@ const docTemplate = `{
                 },
                 "userId": {
                     "type": "integer"
+                }
+            }
+        },
+        "response.CommonUserResponse": {
+            "type": "object",
+            "properties": {
+                "createdAt": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "fullName": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
                 }
             }
         },
@@ -658,6 +823,20 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "$ref": "#/definitions/response.CommonExpenseResponse"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "util.BaseResponse-response_CommonUserResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/response.CommonUserResponse"
                 },
                 "message": {
                     "type": "string"

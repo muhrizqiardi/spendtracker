@@ -42,6 +42,32 @@ definitions:
     - email
     - password
     type: object
+  dto.RegisterUserDTO:
+    properties:
+      email:
+        type: string
+      fullName:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - fullName
+    - password
+    type: object
+  dto.UpdateAccountDTO:
+    properties:
+      currencyId:
+        type: integer
+      initialAmount:
+        type: integer
+      name:
+        type: string
+    required:
+    - currencyId
+    - initialAmount
+    - name
+    type: object
   dto.UpdateExpenseDTO:
     properties:
       amount:
@@ -53,6 +79,20 @@ definitions:
     required:
     - amount
     - name
+    type: object
+  dto.UpdateUserDTO:
+    properties:
+      email:
+        type: string
+      fullName:
+        type: string
+      password:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - fullName
+    - password
     type: object
   response.CommonAccountResponse:
     properties:
@@ -98,6 +138,21 @@ definitions:
         type: string
       userId:
         type: integer
+    type: object
+  response.CommonUserResponse:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      fullName:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      updatedAt:
+        type: string
     type: object
   response.LogInResponse:
     properties:
@@ -167,6 +222,15 @@ definitions:
     properties:
       data:
         $ref: '#/definitions/response.CommonExpenseResponse'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  util.BaseResponse-response_CommonUserResponse:
+    properties:
+      data:
+        $ref: '#/definitions/response.CommonUserResponse'
       message:
         type: string
       success:
@@ -257,7 +321,7 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateAccountDTO'
+          $ref: '#/definitions/dto.UpdateAccountDTO'
       responses:
         "200":
           description: OK
@@ -391,7 +455,7 @@ paths:
       tags:
       - expense
   /expenses/{expenseID}:
-    get:
+    delete:
       parameters:
       - description: Expense ID
         in: path
@@ -404,6 +468,21 @@ paths:
           schema:
             $ref: '#/definitions/util.BaseResponse-any'
       summary: Delete one expense by ID
+      tags:
+      - expense
+    get:
+      parameters:
+      - description: Expense ID
+        in: path
+        name: expenseID
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.BaseResponse-response_CommonExpenseResponse'
+      summary: Get one expense by ID
       tags:
       - expense
     put:
@@ -427,4 +506,43 @@ paths:
       summary: Update expense
       tags:
       - expense
+  /users:
+    post:
+      parameters:
+      - description: Create user DTO
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterUserDTO'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/util.BaseResponse-response_CommonUserResponse'
+      summary: Register user
+      tags:
+      - user
+  /users/{userID}:
+    put:
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: string
+      - description: Update user DTO
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateUserDTO'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/util.BaseResponse-response_CommonUserResponse'
+      summary: Update user
+      tags:
+      - user
 swagger: "2.0"

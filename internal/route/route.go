@@ -44,7 +44,6 @@ func (r *router) Define() *echo.Echo {
 		r.authm.Authenticate,
 	)
 
-	protected.GET("/users/:userID", r.userh.GetOneByID)
 	protected.PUT("/users/:userID", r.userh.UpdateOneByID)
 
 	protected.POST("/accounts", r.accounth.Create)
