@@ -11,7 +11,7 @@ import (
 )
 
 func SetupMigrateAndSeedMySQL(cfg util.Config, lg util.Logger) (*gorm.DB, error) {
-	connStr := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+	connStr := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
 		cfg.DB_Username,
 		cfg.DB_Password,
 		cfg.DB_Host,

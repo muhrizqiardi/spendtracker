@@ -26,7 +26,7 @@ func (oar *openAIRepository) GetResponse(prompt, message string) (string, error)
 	req := openai.ChatCompletionRequest{
 		Stream:    true,
 		Model:     openai.GPT3Dot5Turbo,
-		MaxTokens: 20,
+		MaxTokens: 56,
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    openai.ChatMessageRoleSystem,

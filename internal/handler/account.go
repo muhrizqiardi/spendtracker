@@ -28,11 +28,12 @@ func NewAccountHandler(as service.AccountService) *accountHandler {
 	return &accountHandler{as}
 }
 
-// @Router		/accounts [post]
-// @Summary	Create to account
-// @Tags		account
-// @Param		payload	body		dto.CreateAccountDTO	true	"Create account DTO"
-// @Success	201		{object}	util.BaseResponse[response.CommonAccountResponse]
+//	@Router		/accounts [post]
+//	@Summary	Create to account
+//	@Tags		account
+//	@Param		payload	body	dto.CreateAccountDTO	true	"Create account DTO"
+//	@Security	Bearer
+//	@Success	201	{object}	util.BaseResponse[response.CommonAccountResponse]
 func (ah *accountHandler) Create(c echo.Context) error {
 	var payload dto.CreateAccountDTO
 	if err := c.Bind(&payload); err != nil {
@@ -70,11 +71,12 @@ func (ah *accountHandler) Create(c echo.Context) error {
 	)
 }
 
-// @Router		/accounts/{accountID} [get]
-// @Summary	Get one by ID
-// @Tags		account
-// @Param		accountID	path		string	true	"Account ID"
-// @Success	200			{object}	util.BaseResponse[response.CommonAccountResponse]
+//	@Router		/accounts/{accountID} [get]
+//	@Summary	Get one by ID
+//	@Tags		account
+//	@Param		accountID	path	string	true	"Account ID"
+//	@Security	Bearer
+//	@Success	200	{object}	util.BaseResponse[response.CommonAccountResponse]
 func (ah *accountHandler) GetOneByID(c echo.Context) error {
 	accountID, err := strconv.Atoi(c.Param("accountID"))
 	if err != nil {
@@ -109,12 +111,13 @@ func (ah *accountHandler) GetOneByID(c echo.Context) error {
 	)
 }
 
-// @Router		/accounts/ [get]
-// @Summary	Get many
-// @Tags		account
-// @Param		itemPerPage	query		string	false	"Amount of items per page"
-// @Param		page		query		string	false	"Page number"
-// @Success	200			{object}	util.BaseResponse[[]response.CommonAccountResponse]
+//	@Router		/accounts/ [get]
+//	@Summary	Get many
+//	@Tags		account
+//	@Param		itemPerPage	query	string	false	"Amount of items per page"
+//	@Param		page		query	string	false	"Page number"
+//	@Security	Bearer
+//	@Success	200	{object}	util.BaseResponse[[]response.CommonAccountResponse]
 func (ah *accountHandler) GetMany(c echo.Context) error {
 	itemPerPage := 10
 	page := 1
@@ -152,12 +155,13 @@ func (ah *accountHandler) GetMany(c echo.Context) error {
 	)
 }
 
-// @Router		/accounts/{accountID} [put]
-// @Summary	Update account
-// @Tags		account
-// @Param		accountID	path		string					true	"Account ID"
-// @Param		payload		body		dto.UpdateAccountDTO true	"Update account DTO"
-// @Success	200			{object}	util.BaseResponse[response.CommonAccountResponse]
+//	@Router		/accounts/{accountID} [put]
+//	@Summary	Update account
+//	@Tags		account
+//	@Param		accountID	path	string					true	"Account ID"
+//	@Param		payload		body	dto.UpdateAccountDTO	true	"Update account DTO"
+//	@Security	Bearer
+//	@Success	200	{object}	util.BaseResponse[response.CommonAccountResponse]
 func (ah *accountHandler) UpdateOneByID(c echo.Context) error {
 	var payload dto.UpdateAccountDTO
 	if err := c.Bind(&payload); err != nil {
@@ -185,11 +189,12 @@ func (ah *accountHandler) UpdateOneByID(c echo.Context) error {
 	)
 }
 
-// @Router		/accounts/{accountID} [delete]
-// @Summary	Delete account
-// @Tags		account
-// @Param		accountID	path		string	true	"Account ID"
-// @Success	200			{object}	util.BaseResponse[any]
+//	@Router		/accounts/{accountID} [delete]
+//	@Summary	Delete account
+//	@Tags		account
+//	@Param		accountID	path		string	true	"Account ID"
+//	@Success	200			{object}	util.BaseResponse[any]
+//	@Security	Bearer
 func (ah *accountHandler) DeleteOneByID(c echo.Context) error {
 	accountID, err := strconv.Atoi(c.Param("accountID"))
 	if err != nil {

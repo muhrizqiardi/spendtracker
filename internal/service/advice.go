@@ -6,7 +6,7 @@ import (
 	"github.com/muhrizqiardi/spendtracker/internal/repository"
 )
 
-const Prompt string = "Given the maximum of 20 expenses consists of name, description, and the amount, give me a financial advice based on that, in two paragraph."
+const Prompt string = "Given the maximum of 20 expenses consists of name, description, and the amount, give me a financial advice based on that, in two sentence maximum."
 
 type AdviceService interface {
 	GetAdvice(userID int) (string, error)

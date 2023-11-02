@@ -17,6 +17,11 @@ const docTemplate = `{
     "paths": {
         "/accounts": {
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "account"
                 ],
@@ -44,6 +49,11 @@ const docTemplate = `{
         },
         "/accounts/": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "account"
                 ],
@@ -74,6 +84,11 @@ const docTemplate = `{
         },
         "/accounts/{accountID}": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "account"
                 ],
@@ -97,6 +112,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "account"
                 ],
@@ -129,6 +149,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "account"
                 ],
@@ -154,6 +179,11 @@ const docTemplate = `{
         },
         "/accounts/{accountID}/expenses": {
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "expense"
                 ],
@@ -162,7 +192,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "Account ID",
-                        "name": "accountId",
+                        "name": "accountID",
                         "in": "path",
                         "required": true
                     },
@@ -181,6 +211,27 @@ const docTemplate = `{
                         "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/util.BaseResponse-response_CommonExpenseResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/advice": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "tags": [
+                    "advice"
+                ],
+                "summary": "Get advice",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/util.BaseResponse-response_CommonAccountResponse"
                         }
                     }
                 }
@@ -215,6 +266,11 @@ const docTemplate = `{
         },
         "/categories": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "category"
                 ],
@@ -245,6 +301,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "category"
                 ],
@@ -272,6 +333,11 @@ const docTemplate = `{
         },
         "/categories/{categoryID}": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "category"
                 ],
@@ -286,6 +352,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "category"
                 ],
@@ -302,6 +373,11 @@ const docTemplate = `{
         },
         "/expenses": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "expense"
                 ],
@@ -346,6 +422,11 @@ const docTemplate = `{
         },
         "/expenses/{expenseID}": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "expense"
                 ],
@@ -369,6 +450,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "expense"
                 ],
@@ -401,6 +487,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "tags": [
                     "expense"
                 ],
@@ -521,10 +612,14 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "amount",
+                "categoryId",
                 "name"
             ],
             "properties": {
                 "amount": {
+                    "type": "integer"
+                },
+                "categoryId": {
                     "type": "integer"
                 },
                 "description": {
@@ -593,10 +688,14 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "amount",
+                "categoryId",
                 "name"
             ],
             "properties": {
                 "amount": {
+                    "type": "integer"
+                },
+                "categoryId": {
                     "type": "integer"
                 },
                 "description": {
@@ -845,6 +944,13 @@ const docTemplate = `{
                     "type": "boolean"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`

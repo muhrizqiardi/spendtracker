@@ -22,6 +22,11 @@ func NewAdviceHandler(ads service.AdviceService) *adviceHandler {
 	return &adviceHandler{ads}
 }
 
+//	@Router		/advice [get]
+//	@Summary	Get advice
+//	@Tags		advice
+//	@Security	Bearer
+//	@Success	200	{object}	util.BaseResponse[response.CommonAccountResponse]
 func (adh *adviceHandler) GetAdvice(c echo.Context) error {
 	user := c.Get("user").(model.User)
 

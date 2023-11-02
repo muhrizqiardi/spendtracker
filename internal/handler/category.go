@@ -30,8 +30,9 @@ func NewCategoryHandler(cs service.CategoryService) *categoryHandler {
 //	@Router		/categories [post]
 //	@Summary	Create category
 //	@Tags		category
-//	@Param		payload	body		dto.CreateCategoryDTO	true	"Create category DTO"
-//	@Success	201		{object}	util.BaseResponse[response.CommonCategoryResponse]
+//	@Param		payload	body	dto.CreateCategoryDTO	true	"Create category DTO"
+//	@Security	Bearer
+//	@Success	201	{object}	util.BaseResponse[response.CommonCategoryResponse]
 func (ch *categoryHandler) Create(c echo.Context) error {
 	var payload dto.CreateCategoryDTO
 	if err := c.Bind(&payload); err != nil {
@@ -72,6 +73,9 @@ func (ch *categoryHandler) Create(c echo.Context) error {
 //	@Router		/categories/{categoryID} [get]
 //	@Summary	Get one category by ID
 //	@Tags		category
+//
+//	@Security	Bearer
+//
 //	@Success	200	{object}	util.BaseResponse[response.CommonCategoryResponse]
 func (ch *categoryHandler) GetOneByID(c echo.Context) error {
 	categoryID, err := strconv.Atoi(c.Param("categoryID"))
@@ -120,9 +124,10 @@ func (ch *categoryHandler) GetOneByID(c echo.Context) error {
 //	@Router		/categories [get]
 //	@Summary	Get many categories
 //	@Tags		category
-//	@Param		itemPerPage	query		string	true	"Amount of items per page"
-//	@Param		page		query		string	true	"Page number"
-//	@Success	200			{object}	util.BaseResponse[[]response.CommonCategoryResponse]
+//	@Param		itemPerPage	query	string	true	"Amount of items per page"
+//	@Param		page		query	string	true	"Page number"
+//	@Security	Bearer
+//	@Success	200	{object}	util.BaseResponse[[]response.CommonCategoryResponse]
 func (ch *categoryHandler) GetMany(c echo.Context) error {
 	itemPerPage := 10
 	page := 1
@@ -176,6 +181,7 @@ func (ch *categoryHandler) GetMany(c echo.Context) error {
 //	@Router		/categories/{categoryID} [delete]
 //	@Summary	Delete one category by ID
 //	@Tags		category
+//	@Security	Bearer
 //	@Success	200	{object}	util.BaseResponse[any]
 func (ch *categoryHandler) DeleteOneByID(c echo.Context) error {
 	categoryID, err := strconv.Atoi(c.Param("categoryID"))

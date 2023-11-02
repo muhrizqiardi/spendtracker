@@ -17,9 +17,12 @@ import (
 	"go.uber.org/zap"
 )
 
-// @title			Spendtracker API
-// @version		1.0
-// @description	API for Spendtracker
+//	@title						Spendtracker API
+//	@version					1.0
+//	@description				API for Spendtracker
+//	@securityDefinitions.apikey	Bearer
+//	@in							header
+//	@name						Authorization
 func main() {
 	zl, err := zap.NewProduction()
 	if err != nil {
